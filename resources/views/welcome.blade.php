@@ -44,12 +44,11 @@
 </div>
 <div x-data="{show: false, message: ''}"
      x-show="show"
-     x-text="message"
      @flash.window="message = $event.detail.message; show = true;"
-class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-2 rounded"
+    class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-2 rounded"
 >
-    Here is my Flash message
-
+<span x-text="message" class="pr-4"></span>
+    <button @click="show = false">&times;</button>
 </div>
 <script>
     function pause(milliseconds = 1000){
