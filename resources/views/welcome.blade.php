@@ -42,11 +42,26 @@
  </template>
     </div>
 </div>
+<div x-data="{show: false, message: ''}"
+     x-show="show"
+     x-text="message"
+     @flash.window="message = $event.detail.message; show = true;"
+class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-2 rounded"
+>
+    Here is my Flash message
+
+</div>
 <script>
     function pause(milliseconds = 1000){
         return new Promise(function (resolve){
             setTimeout(resolve , milliseconds);
         });
+    }
+
+    function flash(message){
+        window.dispatchEvent(new CustomEvent('flash',{
+            detail: {message}
+        }));
     }
      function game() {
          return {
@@ -78,23 +93,26 @@
 
              },
               async flipCard(card) {
+                 if(this.flippedCards.length === 2){
+                     return;
+                 }
                 card.flipped = ! card.flipped;
                 if (this.flippedCards.length === 2) {
                     if(this.hasMatch()) {
                         await pause(5000);
-                        this.flippedCards.forEach(card=> card.cleard = true);
+                        this.flippedCards.forEach(card => card.cleard = true);
                         if(! this.remainingCards.length){
                             alert('You Win!');
                         }
                     }
-                    await pause();
+
                       this.flippedCards.forEach(card=> card.flipped = false);
 
 
                 }
               },
              hasMatch() {
-                 return this.flippedCards[0]['color'] === this.flippedCards[0]['color']
+                 return this.flippedCards[0]['color'] === this.flippedCards[1]['color']
              }
          };
      }
