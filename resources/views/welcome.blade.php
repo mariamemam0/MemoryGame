@@ -23,18 +23,13 @@
         @endif
     </head>
 <body>
-<div x-data="{message: 'Click Me'}" class="px-10 flex items-center justify-center min-h-screen">
+<div x-data="{cards: [{color: 'green',flipped: false, cleared: false}] }" class="px-10 flex items-center justify-center min-h-screen">
     <div class="flex-1 grid grid-cols-4 gap-10 ">
-        <div class="h-32 bg-gray-300">
-            <button @click="message='I have been clicked'" x-text="message"></button>
-        </div>
-        <div class="h-32 bg-gray-300"></div>
-        <div class="h-32 bg-gray-300"></div>
-        <div class="h-32 bg-gray-300"></div>
-        <div class="h-32 bg-gray-300"></div>
-        <div class="h-32 bg-gray-300"></div>
-        <div class="h-32 bg-gray-300"></div>
-        <div class="h-32 bg-gray-300"></div>
+ <template x-for="card in cards">
+     <div :style="'background: ' + (card.flipped ? card.color : '#999' ) " class="h-32"
+        @click="card.flipped = ! card.flipped"
+     ></div>
+ </template>
     </div>
 </div>
 </body>
