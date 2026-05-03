@@ -43,12 +43,15 @@
     </div>
 </div>
 <div x-data="{show: false, message: ''}"
-     x-show="show"
-     @flash.window="message = $event.detail.message; show = true;"
+     x-show.transition.opacity="show"
+     x-text = "message"
+     @flash.window="message = $event.detail.message;
+     show = true;
+     setTimeout(() => show = false, 1000)
+     "
     class="fixed bottom-0 right-0 bg-green-500 text-white p-2 mb-4 mr-2 rounded"
 >
 <span x-text="message" class="pr-4"></span>
-    <button @click="show = false">&times;</button>
 </div>
 <script>
     function pause(milliseconds = 1000){
@@ -98,6 +101,7 @@
                 card.flipped = ! card.flipped;
                 if (this.flippedCards.length === 2) {
                     if(this.hasMatch()) {
+                        flash('You found a match!');
                         await pause(5000);
                         this.flippedCards.forEach(card => card.cleard = true);
                         if(! this.remainingCards.length){
