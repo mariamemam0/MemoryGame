@@ -24,16 +24,30 @@
     </head>
 <body>
 <div x-data="game()" class="px-10 flex items-center justify-center min-h-screen">
+    <h1 class="fixed top-0 right-0 p-10 font-bold text-3xl">
+        <span x-text="points"></span>
+        <span class="text-xs">pts</span>
+
+    </h1>
     <div class="flex-1 grid grid-cols-4 gap-10 ">
  <template x-for="card in cards">
-     <div :style="'background: ' + (card.flipped ? card.color : '#999' )"
-          class="h-32 cursor-pointer"
-        @click="card.flipped = ! card.flipped"
-     ></div>
+     <div>
+         <button x-show="!card.cleard" :style="'background: ' + (card.flipped ? card.color : '#999' )"
+                  class=" w-full h-32"
+                  @click="flipCard(card)"
+         >
+
+         </button>
+     </div>
  </template>
     </div>
 </div>
 <script>
+    function pause(milliseconds = 1000){
+        return new Promise(function (resolve){
+            setTimeout(resolve , milliseconds);
+        });
+    }
      function game() {
          return {
              cards: [
@@ -46,7 +60,42 @@
                  {color: 'blue', flipped:false, cleard:false},
                  {color: 'yellow', flipped:false, cleard:false}
 
-             ]
+             ],
+
+             get flippedCards(){
+                 return this.cards.filter(card => card.flipped);
+             },
+             get remainingCards(){
+                 return this.cards.filter(card =>! card.cleard);
+             },
+
+             get clearedCards(){
+                 return this.cards.filter(card => card.cleard);
+             },
+
+             get points(){
+                 return this.clearedCards.length;
+
+             },
+              async flipCard(card) {
+                card.flipped = ! card.flipped;
+                if (this.flippedCards.length === 2) {
+                    if(this.hasMatch()) {
+                        await pause(5000);
+                        this.flippedCards.forEach(card=> card.cleard = true);
+                        if(! this.remainingCards.length){
+                            alert('You Win!');
+                        }
+                    }
+                    await pause();
+                      this.flippedCards.forEach(card=> card.flipped = false);
+
+
+                }
+              },
+             hasMatch() {
+                 return this.flippedCards[0]['color'] === this.flippedCards[0]['color']
+             }
          };
      }
 </script>
