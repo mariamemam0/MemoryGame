@@ -11,7 +11,7 @@
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
- 
+
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -23,10 +23,10 @@
         @endif
     </head>
 <body>
-<div x-data="{}" class="px-10 flex items-center justify-center min-h-screen">
+<div x-data="{message: 'Click Me'}" class="px-10 flex items-center justify-center min-h-screen">
     <div class="flex-1 grid grid-cols-4 gap-10 ">
         <div class="h-32 bg-gray-300">
-            <button @click="alert('hi there')">Click me</button>
+            <button @click="message='I have been clicked'" x-text="message"></button>
         </div>
         <div class="h-32 bg-gray-300"></div>
         <div class="h-32 bg-gray-300"></div>
